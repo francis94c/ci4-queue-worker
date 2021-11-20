@@ -2,6 +2,7 @@
 
 namespace Francis94c\CI4QueueWorker;
 
-class Job
+abstract class Job
 {
+    public function handle(){}
 }
