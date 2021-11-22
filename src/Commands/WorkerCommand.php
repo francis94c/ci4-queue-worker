@@ -2,6 +2,7 @@
 
 namespace Francis94c\CI4QueueWorker\Commands;
 
+use Exception;
 use CodeIgniter\CLI\BaseCommand;
 
 class WorkerCommand extends BaseCommand
@@ -12,12 +13,28 @@ class WorkerCommand extends BaseCommand
 
     public function run(array $params)
     {
-        echo gearman_version() . PHP_EOL;
-        // $worker = new GearmanWorker();
-        // $worker->addServer();
-        // $worker->addFunction("reverse", function ($job) {
-        //     return strrev($job->workload());
-        // });
-        // while ($worker->work());
+        $configClassName  = \Config\Queue::class;
+        if (!class_exists($configClassName)) {
+            throw new Exception('Queue Config File not Found!');
+        }
+
+        $config = new $configClassName();
+
+        $workerClassName = null;
+
+        switch ($config->driver) {
+            case 'redis':
+                if (class_exists(\Redis::class)) {
+                    $workerClassName = \Francis94c\CI4QueueWorker\Drivers\Redis\Worker::class;
+                }
+                break;
+        }
+
+        if ($workerClassName === null) {
+            throw new Exception("Requirement(s) for Queue Driver '$config->driver' not met!");
+        }
+
+        $worker = new $workerClassName();
+        $worker->work();
     }
 }
