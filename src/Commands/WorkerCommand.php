@@ -35,6 +35,6 @@ class WorkerCommand extends BaseCommand
         }
 
         $worker = new $workerClassName();
-        $worker->work();
+        $worker->work($config);
     }
 }
