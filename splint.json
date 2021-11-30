@@ -1,0 +1,14 @@
+{
+    "schema": "v1",
+    "ci_version": "4",
+    "version": "0.0.1",
+    "repository": "https://github.com/francis94c/ci4-queue-worker",
+    "name": "ci4-queue-worker",
+    "description": "A queue worker for CI4",
+    "namespace": "Francis94c\\CI4QueueWorker",
+    "tags": [
+        "ci4",
+        "queue",
+        "worker"
+    ]
+}
