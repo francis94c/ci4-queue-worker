@@ -10,7 +10,16 @@ class Worker implements WorkerDriver
     {
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
+
         while (true) {
+            // Fetch a job from the queue.
+            $jobData = $redis->blPop($config->queue ?? 'queue');
+            $jobData = json_decode($jobData[1]);
+
+            if (!$jobData) continue;
+
+            $job = new $jobData->job(...$jobData->payload);
+            sleep($config->sleep ?? 3);
         }
         // $redis->lPush('queue', 'test1');
         // $redis->lPush('queue', 'test2');
