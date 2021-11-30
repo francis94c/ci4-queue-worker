@@ -4,7 +4,7 @@ namespace CodeIgniter\CLI;
 
 class CLI
 {
-    public function write()
+    public static function write()
     {
     }
 }
